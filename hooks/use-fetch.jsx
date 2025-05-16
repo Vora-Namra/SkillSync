@@ -2,11 +2,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 export const useFetch=(cb)=>{
-    const [data, setData] = useState(undefined);
+    const [data, setData] = useState(undefined); // holds whatever your callback cb returns on success.
     
-    const [loading, setLoading] = useState(null);
+    const [loading, setLoading] = useState(null);//used to indicate progress
     
-    const [error, setError] = useState(null);
+    const [error, setError]  = useState(null);//holds errors
 
     const fn = async(...args)=>{
         setLoading(true);

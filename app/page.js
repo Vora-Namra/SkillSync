@@ -241,7 +241,7 @@ export default function LandingPage() {
       {/* Features Section */}
       <section className="relative w-full py-20 md:py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background to-background/90 -z-10"></div>
-        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent"></div>
+        <div className="absolute top-z0 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent"></div>
         
         <div className="container mx-auto px-4 md:px-6 relative">
           <div className="flex flex-col items-center mb-16">

@@ -43,6 +43,7 @@ model Assessment {
   @@index([userId])
 }
 
+
 model Resume {
   id          String    @id @default(cuid())
   userId      String    @unique    // One resume per user

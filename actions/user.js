@@ -4,9 +4,6 @@ import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { generateAIInsights } from "./dashboard";
 
-/**
- * Turn AI’s “High”/“Medium”/“Low” into your Prisma enum.
- */
 function normalizeDemandLevel(raw) {
   if (!raw) return undefined;
   const up = raw.toUpperCase();
@@ -26,12 +23,16 @@ export async function updateUser(data) {
   try {
     const { updatedUser, industryInsight } = await db.$transaction(
       async (tx) => {
+
+        //performing 3 task in single trans for atomicity
+
+
         // 1) Try find existing insight
         let industryInsight = await tx.industryInsight.findUnique({
           where: { industry: data.industry },
         });
 
-        // 2) If missing, generate and create it
+        // 2) If missing, we have to generate from gemini and create it
         if (!industryInsight) {
           const raw = await generateAIInsights(data.industry);
 
@@ -63,6 +64,7 @@ export async function updateUser(data) {
 
         return { updatedUser, industryInsight };
       },
+      //params2 for transaction which is time 
       { timeout: 10000 }
     );
 

@@ -28,13 +28,18 @@ export const generateAIInsights = async (industry) => {
           Include at least 5 skills and trends.
         `;
 
-  const result = await model.generateContent(prompt);
+  const result = await model.generateContent(prompt); //to prompt the model
   const response = result.response;
   const text = response.text();
   const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
 
   return JSON.parse(cleanedText);
 };
+
+
+
+
+
 export async function getIndustryInsights() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -45,17 +50,17 @@ export async function getIndustryInsights() {
   });
   if (!user) throw new Error("User not found");
 
-  // **Guard**: Make sure the user has completed onboarding
+  // checking if   user finihed onboarding
   if (!user.industry) {
     throw new Error("Please complete your onboarding (select an industry) first.");
   }
 
-  // If we already have insights, return them
+  // If db already have insights, return them
   if (user.industryInsight) {
     return user.industryInsight;
   }
 
-  // Otherwise generate and persist new insights
+  // Otherwise generate insight & insert it it db
   const insights = await generateAIInsights(user.industry);
   return await db.industryInsight.create({
     data: {

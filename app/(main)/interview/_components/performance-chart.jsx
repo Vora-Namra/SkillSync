@@ -22,6 +22,8 @@ import { format } from "date-fns";
 export default function PerformanceChart({ assessments }) {
   const [chartData, setChartData] = useState([]);
 
+
+  //renders the chrt in date & score
   useEffect(() => {
     if (assessments) {
       const formattedData = assessments.map((assessment) => ({
@@ -42,10 +44,10 @@ export default function PerformanceChart({ assessments }) {
       </CardHeader>
       <CardContent>
         <div className="h-[300px]">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%"> 
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
+              <XAxis dataKey="date" /> 
               <YAxis domain={[0, 100]} />
               <Tooltip
                 content={({ active, payload }) => {
@@ -68,7 +70,7 @@ export default function PerformanceChart({ assessments }) {
                 type="monotone"
                 dataKey="score"
                 stroke="hsl(var(--primary))"
-                strokeWidth={2}
+                strokeWidth={3}
               />
             </LineChart>
           </ResponsiveContainer>

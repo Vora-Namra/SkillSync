@@ -15,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import  {entrySchema}  from "@/lib/helper";
+import  {entrySchema}  from "@/lib/schema";
 import { Sparkles, PlusCircle, X, Pencil, Save, Loader2 } from "lucide-react";
 import { improveWithAI } from "@/actions/resume";
 import { toast } from "sonner";
@@ -132,6 +132,7 @@ export function EntryForm({ type, entries, onChange }) {
           </Card>
         ))}
       </div>
+
 
       {isAdding && (
         <Card>

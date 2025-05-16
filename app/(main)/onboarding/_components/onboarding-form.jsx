@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { toast } from "sonner";                      // ← import toast
+import { toast } from "sonner";                      
 import {
   Card,
   CardContent,
@@ -50,10 +50,11 @@ const OnboardingForm = ({ industries }) => {
     resolver: zodResolver(onboardingSchema),
   });
 
+
+  //calling backend 
   const onSubmit = async (values) => {
-    
     try{
-      const formattedIndustry = `${values.industry}-${values.subIndustry
+      const formattedIndustry = `${values.industry}-${values.subIndustry // like:-  software-developer-AI
       .toLowerCase()
       .replace(/ /g, "-")}`;
 
@@ -97,7 +98,7 @@ const OnboardingForm = ({ industries }) => {
                 onValueChange={(value) => {
                   setValue("industry", value);
                   setSelectedIndustry(
-                    industries.find((ind) => ind.id === value)
+                    industries.find((ind) => ind.id === value) //used for firther specialization for sub-industry
                   );
                   setValue("subIndustry", "");
                 }}
@@ -124,7 +125,7 @@ const OnboardingForm = ({ industries }) => {
             </div>
 
             {/* Sub-industry / Specialization */}
-            {watchIndustry && (
+            {watchIndustry && (   //if industry is selected then only this gets actiated
               <div className="space-y-2">
                 <Label htmlFor="subIndustry">Specialization</Label>
                 <Select
@@ -161,7 +162,7 @@ const OnboardingForm = ({ industries }) => {
                 min="0"
                 max="50"
                 placeholder="Enter years of experience"
-                {...register("experience")}
+                {...register("experience")}  //it tells RHF that this input's value be tracked under the exp key in form
               />
               {errors.experience && (
                 <p className="text-sm text-red-500">
@@ -176,7 +177,7 @@ const OnboardingForm = ({ industries }) => {
               <Input
                 id="skills"
                 placeholder="e.g., Python, JavaScript, Project Management"
-                {...register("skills")}
+                {...register("skills")}  //same as exp
               />
               <p className="text-sm text-muted-foreground">
                 Separate multiple skills with commas

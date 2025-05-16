@@ -89,13 +89,15 @@ const DashboardView = ({ insights }) => {
             <OutlookIcon className={`h-4 w-4 ${outlookColor}`} />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{insights.marketOutlook}</div>
+            <div className="text-2xl font-bold">{insights.marketOutlook}</div>  {/*diaply market is either positve or negtive */}
             <p className="text-xs text-muted-foreground">
-              Next update {nextUpdateDistance}
+              Next update {nextUpdateDistance} {/* diplays date for next 5 days ago etc*/}
             </p>
           </CardContent>
         </Card>
 
+
+        {/* Industry Growth Card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -104,20 +106,22 @@ const DashboardView = ({ insights }) => {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {insights.growthRate.toFixed(1)}%
+            <div className="text-2xl font-bold"> 
+              {insights.growthRate.toFixed(1)}%   {/* fixe the float to decimal  */}
             </div>
-            <Progress value={insights.growthRate} className="mt-2" />
+            <Progress value={insights.growthRate} className="mt-2" /> {/* progress bar according to growth rate */}
           </CardContent>
         </Card>
 
+
+      {/* Deman level card */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Demand Level</CardTitle>
             <BriefcaseIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{insights.demandLevel}</div>
+            <div className="text-2xl font-bold">{insights.demandLevel}</div>  {/* High | medium | low */}
             <div
               className={`h-2 w-full rounded-full mt-2 ${getDemandLevelColor(
                 insights.demandLevel
@@ -126,6 +130,8 @@ const DashboardView = ({ insights }) => {
           </CardContent>
         </Card>
 
+
+        {/* Skills Card  */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Top Skills</CardTitle>
@@ -134,7 +140,7 @@ const DashboardView = ({ insights }) => {
           <CardContent>
             <div className="flex flex-wrap gap-1">
               {insights.topSkills.map((skill) => (
-                <Badge key={skill} variant="secondary">
+                <Badge key={skill} variant="secondary"> {/* display eah skill in badge */}
                   {skill}
                 </Badge>
               ))}
@@ -143,7 +149,9 @@ const DashboardView = ({ insights }) => {
         </Card>
       </div>
 
-      {/* Salary Ranges Chart */}
+
+
+      {/* Salary Ranges Chart using recharts library */}
       <Card className="col-span-4">
         <CardHeader>
           <CardTitle>Salary Ranges by Role</CardTitle>
@@ -153,18 +161,18 @@ const DashboardView = ({ insights }) => {
         </CardHeader>
         <CardContent>
           <div className="h-[400px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={salaryData}>
+            <ResponsiveContainer width="100%" height="100%"> {/* provides responsiveness in small device also*/}
+              <BarChart data={salaryData}>  {/* salaryData is an array of objects */}
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
-                {/* getting content while hovering on chart  for particular job salary*/}
-                <Tooltip
-                  content={({ active, payload, label }) => {
-                    if (active && payload && payload.length) {
+                {/* getting content while hovering on chart  for tht job salary*/}
+                <Tooltip                  
+                  content={({ active, payload, label }) => {   {/* active is used when we hover on any part then it gets active & tooltip display contentr */}
+                    if (active && payload && payload.length) {   {/* in payload we have 3 things min max & median salary */}
                       return (
                         <div className="bg-background border rounded-lg p-2 shadow-md">
-                          <p className="font-medium">{label}</p>
+                          <p className="font-medium">{label}</p>  {/* name of role/job */}
                           {payload.map((item) => (
                             <p key={item.name} className="text-sm">
                               {item.name}: ${item.value}K
@@ -185,7 +193,7 @@ const DashboardView = ({ insights }) => {
         </CardContent>
       </Card>
 
-      {/* Industry Trends */}
+      {/* Industry Trends card */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
@@ -206,6 +214,8 @@ const DashboardView = ({ insights }) => {
           </CardContent>
         </Card>
 
+
+          {/* recommended skill card */}
         <Card>
           <CardHeader>
             <CardTitle>Recommended Skills</CardTitle>

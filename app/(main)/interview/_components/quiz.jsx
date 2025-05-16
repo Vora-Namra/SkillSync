@@ -23,12 +23,14 @@ export default function Quiz() {
   const [answers, setAnswers] = useState([]);
   const [showExplanation, setShowExplanation] = useState(false);
 
+  //hook for calling backend for generating quiz
   const {
     loading: generatingQuiz,
     fn: generateQuizFn,
     data: quizData,
   } = useFetch(generateQuiz);
 
+  //hook for calling backend for saving quiz result
   const {
     loading: savingResult,
     fn: saveQuizResultFn,
@@ -36,6 +38,7 @@ export default function Quiz() {
     setData: setResultData,
   } = useFetch(saveQuizResult);
 
+  //when quizdata changes set all the answer select to null 
   useEffect(() => {
     if (quizData) {
       setAnswers(new Array(quizData.length).fill(null));
@@ -48,6 +51,7 @@ export default function Quiz() {
     setAnswers(newAnswers);
   };
 
+  //for moving to next question
   const handleNext = () => {
     if (currentQuestion < quizData.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
@@ -77,6 +81,7 @@ export default function Quiz() {
     }
   };
 
+  //to generate New quiz
   const startNewQuiz = () => {
     setCurrentQuestion(0);
     setAnswers([]);
@@ -99,6 +104,7 @@ export default function Quiz() {
   }
 
   if (!quizData) {
+    {/* Show static content while/before generating quiz data */}
     return (
       <Card className="mx-2">
         <CardHeader>
@@ -119,17 +125,20 @@ export default function Quiz() {
     );
   }
 
+  //TO iterate all the 10 questions by referring the state currentQuestion = 0
   const question = quizData[currentQuestion];
 
   return (
     <Card className="mx-2">
       <CardHeader>
         <CardTitle>
-          Question {currentQuestion + 1} of {quizData.length}
+          Question {currentQuestion + 1} of {quizData.length} {/* 1 out of 10 */}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-lg font-medium">{question.question}</p>
+        
+        {/* rendering 4 options of that question */}
         <RadioGroup
           onValueChange={handleAnswer}
           value={answers[currentQuestion]}

@@ -19,10 +19,11 @@ export async function saveResume(content) {
   if (!user) throw new Error("User not found");
 
   try {
+    //upodate or insert - upsert
     const resume = await db.resume.upsert({
       where: { userId: user.id },
-      update: { content },
-      create: { userId: user.id, content },
+      update: { content }, //if exists
+      create: { userId: user.id, content }, // if not then creates new one
     });
     revalidatePath("/resume");
     return resume;

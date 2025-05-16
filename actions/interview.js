@@ -7,6 +7,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+
+
+//genrate the quiz of 10 questions wit options & answer with explanation
 export async function generateQuiz() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -44,6 +47,7 @@ export async function generateQuiz() {
   `;
 
   try {
+    //cleaning & GENRATING content
     const result = await model.generateContent(prompt);
     const response = result.response;
     const text = response.text();
@@ -57,6 +61,8 @@ export async function generateQuiz() {
   }
 }
 
+
+//to save the result when submitted
 export async function saveQuizResult(questions, answers, score) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -67,6 +73,7 @@ export async function saveQuizResult(questions, answers, score) {
 
   if (!user) throw new Error("User not found");
 
+  //checking user answers for each questions & updating isCorrwct flag
   const questionResults = questions.map((q, index) => ({
     question: q.question,
     answer: q.correctAnswer,
@@ -111,6 +118,7 @@ export async function saveQuizResult(questions, answers, score) {
   }
 
   try {
+    //saving complete quiz in assesment table
     const assessment = await db.assessment.create({
       data: {
         userId: user.id,
@@ -144,7 +152,7 @@ export async function getAssessments() {
         userId: user.id,
       },
       orderBy: {
-        createdAt: "asc",
+        createdAt: "desc",
       },
     });
 
