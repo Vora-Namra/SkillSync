@@ -1,4 +1,4 @@
-# AI Career Coach Platform
+# SkillSync (Ai-powered Career Development Platform)
 
 ## Table of Contents
 - [Project Overview](#project-overview)
@@ -17,7 +17,7 @@
 ---
 
 ## Project Overview
-The **AI Career Coach Platform** is a full-stack web application designed to guide users through the career development process with AI-driven insights and tools. From onboarding and industry analysis to resume generation, quizzes, and cover letters, this platform centralizes all aspects of career planning into an intuitive, personalized experience.
+The **SkillSync** is a full-stack web application designed to guide users through the career development process with AI-driven insights and tools. From onboarding and industry analysis to resume generation, quizzes, and cover letters, this platform centralizes all aspects of career planning into an intuitive, personalized experience.
 
 **Key Objectives:**
 - Personalize career guidance based on user-selected industries and skills
