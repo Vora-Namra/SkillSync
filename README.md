@@ -87,15 +87,15 @@ The **SkillSync** is a full-stack web application designed to guide users throug
 3. **Configure environment variables**
    Create a `.env.local` file:
    ```env
-   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_c2luZ3VsYXItZ29waGVyLTUxLmNsZXJrLmFjY291bnRzLmRldiQ
-   CLERK_SECRET_KEY=sk_test_Kbn1ktq8ZqTVV3e0oa0O0QtGYTGRnohqN7q9LOEsBM
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY= your_publishable_key_clerk
+   CLERK_SECRET_KEY= Clerk_secret_key
    NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
    NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
    NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/onboarding
    NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/onboarding
-   DATABASE_URL=postgresql://neondbdf_owner:npg_7VBo0qJIrQXS@ep-quiet-fire-a4cu2rha-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require
-   DIRECT_URL=postgresql://neondb_owner:npg_Jm2AQpuw0xCr@ep-aged-cldfdfoud-a4qi7z6k-pooler.us-east-1.aws.neon.tech/neondb?connect_timeout=10
-   GEMINI_API_KEY=AIzaSyCraMQR1ty-t3CgdU62gVMvge16uu6gJqo
+   DATABASE_URL= postgresql_database_url
+   DIRECT_URL= postgresql_direct_url
+   GEMINI_API_KEY= your_gemini_key
    ```
 
 4. **Run database migrations**
