@@ -199,3 +199,11 @@
   padding-bottom: 0.5rem;    /* pb-2 */
   padding-right: 0.5rem;     /* pr-2 */
 }
+
+
+#resume-pdf * {
+  all: initial !important;
+  color: #000000 !important;
+  background: #ffffff !important;
+  font-family: Arial, sans-serif !important;
+}

@@ -435,7 +435,7 @@ export default function LandingPage() {
                   with AI-powered guidance.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                  <Link href="/dashboard" passHref>
+                  <Link href="/onboarding" passHref>
                     <Button
                       size="lg"
                       variant="secondary"

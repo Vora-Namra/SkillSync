@@ -25,7 +25,6 @@ import { resumeSchema } from "@/lib/schema";
 import html2pdf from "html2pdf.js";
 import { useFetch } from "@/hooks/use-fetch";
 
-
 export default function ResumeBuilder({ initialContent }) {
   const [activeTab, setActiveTab] = useState("edit");
   const [previewContent, setPreviewContent] = useState(initialContent);
@@ -57,14 +56,12 @@ export default function ResumeBuilder({ initialContent }) {
     error: saveError,
   } = useFetch(saveResume);
 
-  // Watch form fields for preview updates
   const formValues = watch();
 
   useEffect(() => {
     if (initialContent) setActiveTab("preview");
   }, [initialContent]);
 
-  // Update preview content when form values change
   useEffect(() => {
     if (activeTab === "edit") {
       const newContent = getCombinedContent();
@@ -72,7 +69,6 @@ export default function ResumeBuilder({ initialContent }) {
     }
   }, [formValues, activeTab]);
 
-  // Handle save result
   useEffect(() => {
     if (saveResult && !isSaving) {
       toast.success("Resume saved successfully!");
@@ -117,30 +113,53 @@ export default function ResumeBuilder({ initialContent }) {
     setIsGenerating(true);
     try {
       const element = document.getElementById("resume-pdf");
+      if (!element) throw new Error("PDF content not found");
+
+      // Force visible during PDF generation
+      element.style.visibility = 'visible';
+      element.style.position = 'absolute';
+      element.style.left = '-9999px';
+
       const opt = {
         margin: [15, 15],
         filename: "resume.pdf",
         image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          logging: true,
+          allowTaint: true
+        },
+        jsPDF: { 
+          unit: "mm", 
+          format: "a4", 
+          orientation: "portrait" 
+        }
       };
 
       await html2pdf().set(opt).from(element).save();
     } catch (error) {
       console.error("PDF generation error:", error);
+      toast.error("Failed to generate PDF. Please try again.");
     } finally {
       setIsGenerating(false);
+      // Reset hidden state
+      const element = document.getElementById("resume-pdf");
+      if (element) {
+        element.style.visibility = 'hidden';
+        element.style.position = 'static';
+        element.style.left = 'auto';
+      }
     }
   };
 
   const onSubmit = async (data) => {
     try {
       const formattedContent = previewContent
-        .replace(/\n/g, "\n") // Normalize newlines
-        .replace(/\n\s*\n/g, "\n\n") // Normalize multiple newlines to double newlines
+        .replace(/\n/g, "\n")
+        .replace(/\n\s*\n/g, "\n\n")
         .trim();
 
-      console.log(previewContent, formattedContent);
       await saveResumeFn(previewContent);
     } catch (error) {
       console.error("Save error:", error);
@@ -195,7 +214,6 @@ export default function ResumeBuilder({ initialContent }) {
 
         <TabsContent value="edit">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            {/* Contact Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Contact Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-lg bg-muted/50">
@@ -257,7 +275,6 @@ export default function ResumeBuilder({ initialContent }) {
               </div>
             </div>
 
-            {/* Summary */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Professional Summary</h3>
               <Controller
@@ -277,7 +294,6 @@ export default function ResumeBuilder({ initialContent }) {
               )}
             </div>
 
-            {/* Skills */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Skills</h3>
               <Controller
@@ -297,7 +313,6 @@ export default function ResumeBuilder({ initialContent }) {
               )}
             </div>
 
-            {/* Experience */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Work Experience</h3>
               <Controller
@@ -318,7 +333,6 @@ export default function ResumeBuilder({ initialContent }) {
               )}
             </div>
 
-            {/* Education */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Education</h3>
               <Controller
@@ -339,7 +353,6 @@ export default function ResumeBuilder({ initialContent }) {
               )}
             </div>
 
-            {/* Projects */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Projects</h3>
               <Controller
@@ -390,7 +403,7 @@ export default function ResumeBuilder({ initialContent }) {
             <div className="flex p-3 gap-2 items-center border-2 border-yellow-600 text-yellow-600 rounded mb-2">
               <AlertTriangle className="h-5 w-5" />
               <span className="text-sm">
-                You will lose editied markdown if you update the form data.
+                You will lose edited markdown if you update the form data.
               </span>
             </div>
           )}
@@ -402,13 +415,38 @@ export default function ResumeBuilder({ initialContent }) {
               preview={resumeMode}
             />
           </div>
+          
+          {/* PDF Export Container */}
           <div className="hidden">
-            <div id="resume-pdf">
+            <div 
+              id="resume-pdf"
+              style={{ 
+                backgroundColor: '#ffffff',
+                color: '#000000',
+                padding: '20px',
+                fontFamily: 'Arial, sans-serif',
+                fontSize: '12pt',
+                lineHeight: 1.5
+              }}
+            >
               <MDEditor.Markdown
                 source={previewContent}
                 style={{
-                  background: "white",
-                  color: "black",
+                  backgroundColor: '#ffffff !important',
+                  color: '#000000 !important',
+                  '& h1, h2, h3, h4, h5, h6': {
+                    color: '#000000 !important',
+                    backgroundColor: '#ffffff !important',
+                    fontFamily: 'Arial, sans-serif !important'
+                  },
+                  '& p, li, td, th, span, div': {
+                    color: '#333333 !important',
+                    fontFamily: 'Arial, sans-serif !important'
+                  },
+                  '& a': {
+                    color: '#0000EE !important',
+                    textDecoration: 'underline !important'
+                  }
                 }}
               />
             </div>
@@ -418,4 +456,3 @@ export default function ResumeBuilder({ initialContent }) {
     </div>
   );
 }
-
